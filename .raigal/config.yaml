@@ -1,0 +1,23 @@
+version: 1
+
+engines:
+  format: true
+  lint: true
+  code-quality: true
+  ai-slop: true
+  security: true
+
+quality:
+  maxFunctionLoc: 80
+  maxFileLoc: 400
+  maxNesting: 5
+  maxParams: 6
+
+ci:
+  failBelow: 75
+  format: "json"
+
+scoring:
+  thresholds:
+    good: 80
+    ok: 60

@@ -1,0 +1,40 @@
+name: Raigal Quality Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+  checks: write
+
+jobs:
+  gate:
+    name: Raigal Quality Gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch Base Branch for Diff Analysis
+        if: github.event_name == 'pull_request'
+        run: git fetch origin ${{ github.base_ref }} --depth=1
+
+      - name: Run Raigal Quality Gate
+        env:
+          RAIGAL_TOKEN: ${{ secrets.RAIGAL_TOKEN }}
+          RAIGAL_API_URL: https://raigal-cloud-0f5806f42045.herokuapp.com
+        run: |
+          npx -y @methiu/raigal@latest ci --changes --base origin/${{ github.base_ref || 'main' }} --human

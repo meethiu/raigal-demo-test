@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+.raigal/worktrees/
+.raigal/agent/
+.raigal/session.jsonl
+.raigal/history.jsonl
+.raigal/hook.lock
